@@ -4,33 +4,69 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-// let Clock = () => {
-//   return <h1>{new Date().toLocaleString()}</h1>
-// }
-console.log(1)
+import PropTypes from 'prop-types';
+import 'bootstrap/dist/css/bootstrap.css'
 
-class Clock extends Component{
+class Panel extends Component{
+  static defaultProps = {
+  }
+  static propTypes = {
+    //age: PropTypes.number.isRequired
+  }
   constructor () {
     super()
-    this.state = { // ! 可能这是个特别的字段  需要动态更新 都放在这里  明天放到git里呀
-      time: new Date().toLocaleString()
+    this.state = {
+      color1: 'red',
+      color2: 'blue'
     }
   }
-  // 生命周期，挂载后
-  componentDidMount() {
-    setInterval(() => {
-      this.setState({
-        time: new Date().toLocaleString()
-      })
-    }, 1000)
+
+  handleClick(ev) {
+    this.setState({
+      color1: 'pink',
+      color2: 'pink'
+    })
   }
+
   render () {
-    return <h1>{this.state.time}</h1>
+    return <div className="panel panel-default">
+      <button onClick={this.handleClick.bind(this)}>变粉</button>
+      <PanelH color={this.state.color1}></PanelH>
+      <PanelB color={this.state.color2}></PanelB>
+    </div>
+  }
+}
+class PanelH extends Component{
+
+  constructor () {
+    super()
+    this.state = {
+    }
+  }
+
+  render () {
+    return <div className="panel-heading" style={{color:this.props.color}}>
+      header
+    </div>
+  }
+}
+class PanelB extends Component{
+
+  constructor () {
+    super()
+    this.state = {
+    }
+  }
+
+  render () {
+    return <div className="panel-body" style={{color:this.props.color}}>
+      body
+    </div>
   }
 }
 
 
-ReactDOM.render(<Clock />, document.getElementById('root'));
+ReactDOM.render(<Panel />, document.getElementById('root'));
 
 
 
