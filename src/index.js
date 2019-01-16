@@ -6,6 +6,8 @@ import * as serviceWorker from './serviceWorker';
 
 import PropTypes from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.css'
+import axios from 'axios'
+import jsonp from 'jsonp'
 
 class Panel extends Component{
   static defaultProps = {
@@ -15,53 +17,55 @@ class Panel extends Component{
   }
   constructor () {
     super()
+    this.timer = null
     this.state = {
-      color1: 'red',
-      color2: 'blue'
+      words: ['a', 'b']
     }
   }
 
-  handleClick(ev) {
-    this.setState({
-      color1: 'pink',
-      color2: 'pink'
-    })
+  componentDidMount() {
   }
-
-  render () {
-    return <div className="panel panel-default">
-      <button onClick={this.handleClick.bind(this)}>变粉</button>
-      <PanelH color={this.state.color1}></PanelH>
-      <PanelB color={this.state.color2}></PanelB>
-    </div>
-  }
-}
-class PanelH extends Component{
-
-  constructor () {
-    super()
-    this.state = {
+  
+  
+  handleChange = (ev) => {
+    if (this.timer) {
+      clearTimeout(this.timer)
+      this.timer = null
     }
+    const wd = ev.target.value
+    if (!wd.length) { return }
+    
+    this.timer = setTimeout(() => {
+      jsonp('https://www.baidu.com/su?wd=' + wd, {param: 'cb'}, (err, data) => {
+        if (err) { console.log(err);return }
+        console.log(data)
+      })
+    }, 300);
   }
 
   render () {
-    return <div className="panel-heading" style={{color:this.props.color}}>
-      header
-    </div>
-  }
-}
-class PanelB extends Component{
-
-  constructor () {
-    super()
-    this.state = {
-    }
-  }
-
-  render () {
-    return <div className="panel-body" style={{color:this.props.color}}>
-      body
-    </div>
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col-sm-8 col-sm-offset-2">
+            <div className="panel panel-default">
+              <div className="panel-heading">
+                <input type="text" className="form-control" onChange={this.handleChange} />
+              </div>
+              <div className="panel-body">
+                <ul className="list-group">
+                  {
+                    this.state.words.map((word, index) => {
+                      return <li className="list-group-item" key={index}>{word}</li>
+                    })
+                  }
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 }
 
