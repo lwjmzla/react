@@ -12,3 +12,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.list-group-item.active{
+  background-color: #eee!important;
+  border-color: #eee!important;
+}
+
+#root{
+  margin: 50px auto;
+}
+
+.line-through{
+  text-decoration: line-through;
+}

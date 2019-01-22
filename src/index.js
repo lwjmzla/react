@@ -6,61 +6,68 @@ import * as serviceWorker from './serviceWorker';
 
 import PropTypes from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.css'
-import axios from 'axios'
-import jsonp from 'jsonp'
 
-class Panel extends Component{
+import TodoHeader from './component/TodoHeader.js'
+import TodoItem from './component/TodoItem.js'
+
+class TodoApp extends Component{
   static defaultProps = {
   }
   static propTypes = {
     //age: PropTypes.number.isRequired
   }
-  constructor () {
-    super()
-    this.timer = null
+  constructor (props) {
+    super(props)
     this.state = {
-      words: ['a', 'b']
+      todos: [
+        {id: Date.now(),title: '111111111',completed: false},
+        {id: Date.now()+1,title: '2222222222',completed: true}
+      ]
     }
   }
-
+  componentWillMount() {
+    //console.log(1)
+  }
   componentDidMount() {
+    //console.log(3)
   }
-  
-  
-  handleChange = (ev) => {
-    if (this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
-    }
-    const wd = ev.target.value
-    if (!wd.length) { return }
-    
-    this.timer = setTimeout(() => {
-      jsonp('https://www.baidu.com/su?wd=' + wd, {param: 'cb'}, (err, data) => {
-        if (err) { console.log(err);return }
-        console.log(data)
-      })
-    }, 300);
+  // ! 定义方法
+  addTodo = (obj) => {
+    let todos = [...this.state.todos, obj]
+    this.setState({
+      todos
+    })
   }
-
+  toggleCompleted = (obj) => {
+    let todos = this.state.todos.map((item, index) => {
+      if (item.id === obj.id) {
+        item.completed = !item.completed
+      }
+      return item
+    })
+    this.setState({
+      todos
+    })
+  }
   render () {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-sm-8 col-sm-offset-2">
+          <div className="col-md-6 col-md-offset-3">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <input type="text" className="form-control" onChange={this.handleChange} />
+                <TodoHeader addTodo={this.addTodo}></TodoHeader>
               </div>
               <div className="panel-body">
                 <ul className="list-group">
                   {
-                    this.state.words.map((word, index) => {
-                      return <li className="list-group-item" key={index}>{word}</li>
+                    this.state.todos.map((todo, index) => {
+                      return <TodoItem todo={todo} key={index} toggleCompleted={this.toggleCompleted}></TodoItem>
                     })
                   }
                 </ul>
               </div>
+              <div className="panel-footer"></div>
             </div>
           </div>
         </div>
@@ -70,7 +77,7 @@ class Panel extends Component{
 }
 
 
-ReactDOM.render(<Panel />, document.getElementById('root'));
+ReactDOM.render(<TodoApp />, document.getElementById('root'));
 
 
 
