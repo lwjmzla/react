@@ -8,6 +8,9 @@ export default class TodoItem extends React.Component {
   changeHandler = (ev) => {
     this.props.toggleCompleted(this.props.todo)
   }
+  deleTodo = () => {
+    this.props.deleTodo(this.props.todo)
+  }
   render() {
     return (
       <li className="list-group-item">
@@ -19,7 +22,7 @@ export default class TodoItem extends React.Component {
             {this.props.todo.title}
           </div>
           <div className="col-md-1">
-            <button className="btn btn-danger btn-xs">X</button>
+            <button className="btn btn-danger btn-xs" onClick={this.deleTodo}>X</button>
           </div>
         </div>
       </li>

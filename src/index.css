@@ -25,3 +25,7 @@ code {
 .line-through{
   text-decoration: line-through;
 }
+
+.midBtn{
+  margin: 0 10px
+}
